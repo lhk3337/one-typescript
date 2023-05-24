@@ -13,10 +13,9 @@ let num7: number = NaN;
 // string
 
 let str1: string = "hello";
-let str2: string = "hello";
-let str3: string = "hello";
-let str4: string = "hello";
-let str5: string = "hello";
+let str2: string = "'hello'";
+let str3: string = `hello`;
+let str4: string = `hello${str1}`;
 
 // str = 1; type error
 // str1.toFixed(); number method error

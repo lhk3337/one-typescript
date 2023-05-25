@@ -43,3 +43,23 @@ let strA: "hello" = "hello";
 
 let boolA: true = true;
 // boolA = false; // boolean true만 허용
+
+// enum 열거형 타입, ts에만 있는 타입
+
+enum Langueage {
+  korean = "ko",
+  english = "en",
+}
+
+enum Role {
+  ADMIN,
+  USER,
+  GUEST,
+  langueage = Langueage.korean,
+}
+
+const user1 = { name: "master", role: Role.ADMIN, langueage: Role.langueage };
+const user2 = { name: "user1", role: Role.USER };
+const user3 = { name: "user2", role: Role.GUEST };
+
+// console.log(user1, user2, user3);

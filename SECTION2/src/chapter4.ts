@@ -99,8 +99,10 @@ let countryNumberCode: CountryNumberCode = {
 
 type CountryNumberAndStringCode = {
   [key: string]: number;
-  Korea: string;
+  // Korea: string;
+  Korea: number;
 };
 let countryNumberAndStringCode: CountryNumberAndStringCode = {
-  Korea: "ko",
+  // Korea: "ko",
+  Korea: 410,
 };

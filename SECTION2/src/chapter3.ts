@@ -23,4 +23,4 @@ let config: {
   readonly apiKey: string;
 } = { apiKey: "My Api Key" };
 
-config.apiKey = "aweofiajwe";
+// config.apiKey = "aweofiajwe";

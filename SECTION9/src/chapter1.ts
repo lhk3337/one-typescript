@@ -1,97 +1,69 @@
 /**
- * 조건부 타입
+ * 분산적인 조건부 타입
  */
-
-type A = number extends string ? string : number;
-// type A는 string이 number타입의 슈퍼타입이 아니라서 false인 number타입으로 추론된다.
-const a: A = 1;
-
-type ObjA = { a: number };
-type ObjB = { a: number; b: string };
-
-type B = ObjB extends ObjA ? number : string;
-
-// 제네릭을 이용한 조건부 타입 선언하기
 
 type StringNumberSwitch<T> = T extends number ? string : number;
 
-let varA: StringNumberSwitch<number>; // let varA: string
+let c: StringNumberSwitch<number | string>;
+// let c는 분리되어 아래와 같이 두가지 유니언 타입을 가지게 된다.
 
-let varB: StringNumberSwitch<string>; // let varB: number
+// StringNumberSwitch<number> |
+// StringNumberSwitch<string>
 
-// ==================================================================
+let d: StringNumberSwitch<boolean | number | string>;
+// 1단계
 
-// function removeSpace(text: string) {
-//   return text.replaceAll(" ", "");
-// }
+// StringNumberSwitch<boolean> |
+// StringNumberSwitch<number> |
+// StringNumberSwitch<string>
 
-// let result = removeSpace("hello good moring");
-// result.toUpperCase();
+// 2단계
 
-// ==================================================================
+// boolean extends number ? string : number => number |
+// number extends number ? string : number => string |
+// string extends number ? string : number => number
 
-// function removeSpace(text: string | undefined | null) {
-//   return text.replaceAll(" ", ""); // ❌
-// }
+// 결과
+// number | string
 
-// let result = removeSpace("hello good moring");
+/**
+ * 실용적인 예제
+ */
 
-// ==================================================================
+type Exclude<T, U> = T extends U ? never : T;
 
-// function removeSpace(text: string | undefined | null) {
-//   if (typeof text === "string") {
-//     return text.replaceAll(" ", "");
-//   } else {
-//     return undefined;
-//   }
-// }
+type A = Exclude<number | string | boolean, string>;
+// 1 단계
+// Exclude<number, string> |
+// Exclude<string, string> |
+// Exclude<boolean, string>
 
-// let result = removeSpace("hello good moring"); // string | undefined
+// 2 단계
+// number |
+// never |
+// boolean
 
-// ==================================================================
+// 결과
+// number | boolean
+// T와 U가 같은 타입이면 그 타입을 배제 시킨다.
 
-// function removeSpace<T>(text: T): T extends string ? string : undefined {
-//   if (typeof text === "string") {
-//     return text.replaceAll(" ", ""); // ❌
-//   } else {
-//     return undefined; // ❌
-//   }
-// }
-// let result = removeSpace("hello good moring");
-// result.toUpperCase();
+type Extract<T, U> = T extends U ? T : never;
 
-// ==================================================================
+type B = Extract<number | string | boolean, string>;
+// 1 단계
+// Extract<number, string> |
+// Extract<string, string> |
+// Extract<boolean, string>
 
-// function removeSpace<T>(text: T): T extends string ? string : undefined {
-//   if (typeof text === "string") {
-//     return text.replaceAll(" ", "") as any;
-//     return 0 as any; // 문제 감지 못함
-//   } else {
-//     return undefined as any;
-//   }
-// }
+// 2단계
+// never |
+// string |
+// never
 
-// let result = removeSpace("hello good moring");
-// // string
-
-// let result2 = removeSpace(undefined);
-// // undefined
-
-// ==================================================================
-function removeSpace<T>(text: T): T extends string ? string : undefined;
-function removeSpace(text: any) {
-  if (typeof text === "string") {
-    // return 0; // ❌
-    return text.replaceAll(" ", "");
-  } else {
-    // return 0; // ❌
-    return undefined;
-  }
-}
-
-let result = removeSpace("hello good moring");
+// 결과
 // string
-result.toUpperCase();
+// T와 U가 같은 타입이면 그 타입만 추론한다.
 
-let result2 = removeSpace(undefined);
-// undefined
+// 분산적인 조건 타입을 막는 방법
+type StringNumberSwitchs<T> = [T] extends [number] ? string : number;
+let e: StringNumberSwitch<boolean | number | string>;

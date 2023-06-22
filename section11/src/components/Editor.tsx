@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import { Todo } from "../App";
 
 interface Props {
   onClickAdd: (text: string) => void;
-  todos: Todo[];
 }
 
-const Editor = ({ onClickAdd, todos }: Props) => {
+const Editor = ({ onClickAdd }: Props) => {
   const [text, setText] = useState("");
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,15 +19,6 @@ const Editor = ({ onClickAdd, todos }: Props) => {
     <div>
       <input value={text} onChange={onChangeInput} />
       <button onClick={onClickButton}>Add</button>
-      <div>
-        {todos.map((v) => (
-          <div key={v.id}>
-            <span>
-              {v.id}. {v.content}
-            </span>
-          </div>
-        ))}
-      </div>
     </div>
   );
 };
